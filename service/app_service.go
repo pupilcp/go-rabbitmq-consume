@@ -32,7 +32,7 @@ var (
 	NoticeChannel            = make(chan NoticeMsg, 10)
 	mutex                    sync.Mutex
 	exitChan                 = make(chan os.Signal)
-	serverStart              = time.Now().Format("2006-01-02 15:04:05")
+	serverStart              = time.Now()
 	mqMsgWarningCountMapping = make(map[string]int)
 )
 
@@ -387,7 +387,7 @@ func (s *appService) showStatus() {
 	msg := ""
 	if isLive {
 		msg = "系统状态：running\n"
-		msg += "启动时间：" + serverStart + "\n"
+		msg += fmt.Sprintf("启动时间：%s，运行时长：%s\n", serverStart.Format("2006-01-02 15:04:05"), time.Since(serverStart))
 		TaskWorkerMaps.Range(func(key, worker interface{}) bool {
 			taskWorker := worker.(TaskWorker)
 			msg += fmt.Sprintf("- Task worker id: %d, 队列名：%s 正在运行\n", taskWorker.Task.Id, taskWorker.Task.QueueName)

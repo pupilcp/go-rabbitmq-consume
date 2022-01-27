@@ -40,7 +40,8 @@ config_demo.toml说明。
 
 ### 安装：
 1. git clone https://github.com/pupilcp/go-rabbitmq-consume.git
-2. 编译：cd $PATH/, go build -o main.go，生成server二进制执行文件。
+2. 安装依赖：cd $PATH, go mod tidy
+3. 编译：cd $PATH, go build -o main.go，生成server二进制执行文件。
 
 ### 使用
 1. ./server start 启动服务
