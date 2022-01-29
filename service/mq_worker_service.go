@@ -78,7 +78,7 @@ func (s *mqWorkerService) consume(taskWorker *TaskWorker) {
 	for {
 		select {
 		case <-taskWorker.Ctx.Done():
-			errMsg := fmt.Sprintf("Task id: %d, worker收到取消信号：%+v", taskWorker.Task.Id, taskWorker.Ctx.Err())
+			errMsg := fmt.Sprintf("> Task id: %d, worker收到取消信号：%+v", taskWorker.Task.Id, taskWorker.Ctx.Err())
 			global.ServerLogger.Error(errMsg)
 			AppService.PushNoticeToChannel("MQ消费worker关闭提示", errMsg)
 			//关闭channel
@@ -89,7 +89,7 @@ func (s *mqWorkerService) consume(taskWorker *TaskWorker) {
 			return
 		case <-cancelChan:
 		case <-closeChan:
-			errMsg := fmt.Sprintf("Task id: %d, worker关闭channel", taskWorker.Task.Id)
+			errMsg := fmt.Sprintf("> Task id: %d, worker关闭channel", taskWorker.Task.Id)
 			AppService.PushNoticeToChannel("MQ Channel关闭提示", errMsg)
 			return
 		case d := <-delivery:

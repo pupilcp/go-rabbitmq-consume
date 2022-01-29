@@ -1,3 +1,4 @@
 /config/config.toml
 /runtime/
 /runtime/.*
+/global/config/config.toml

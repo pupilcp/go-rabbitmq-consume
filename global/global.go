@@ -1,6 +1,7 @@
 package global
 
 import (
+	"embed"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -16,6 +17,9 @@ var (
 	DB           *gorm.DB
 )
 
+//go:embed config/config.toml
+var configFile embed.FS
+
 func SetUp() {
 	setConfig()
 	setLogger()
@@ -25,7 +29,6 @@ func SetUp() {
 }
 
 func setLogger() {
-
 	logger := &lumberjack.Logger{
 		// 日志输出文件路径
 		Filename: Config.Get("log.logPath").(string) + "/" + time.Now().Format("20060102") + ".log",
@@ -43,11 +46,11 @@ func setLogger() {
 }
 
 func setConfig() {
+	var err error
+	fp, _ := configFile.Open("config/config.toml")
 	Config = viper.New()
-	Config.SetConfigName("config")
 	Config.SetConfigType("toml")
-	Config.AddConfigPath("./config")
-	err := Config.ReadInConfig()
+	err = Config.ReadConfig(fp)
 	if err != nil {
 		log.Fatalf("read config failed: %+v", err)
 	}
