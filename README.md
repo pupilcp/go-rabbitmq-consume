@@ -16,6 +16,7 @@
 2. 使用连接池实现连接rabbitmq
 3. 使用goroutine+channel实现预警信息的异步发送
 4. 使用signal实现平滑停止服务或查询服务状态
+5. 编译将配置文件打包到服务中，一键打包，任意路径下运行服务
 
 ### 核心依赖库
 1. viper解析toml配置文件
@@ -32,16 +33,16 @@
 3. rabbitmq
 
 #### 导入sql数据
-将config下的data.sql文件导入到mysql数据库
+将global/config下的data.sql文件导入到mysql数据库
 
 #### 修改配置文件
-复制根目录下的config/config_demo.toml，并重命名为：config.toml，修改配置文件里的参数。具体参数请参考
+复制根目录下的global/config/config_demo.toml，并重命名为：config.toml，修改配置文件里的参数。具体参数请参考
 config_demo.toml说明。
 
 ### 安装：
 1. git clone https://github.com/pupilcp/go-rabbitmq-consume.git
 2. 安装依赖：cd $PATH, go mod tidy
-3. 编译：cd $PATH, go build -o main.go，生成server二进制执行文件。
+3. 编译：cd $PATH, go build -o server . ，生成server二进制执行文件。
 
 ### 使用
 1. ./server start 启动服务
