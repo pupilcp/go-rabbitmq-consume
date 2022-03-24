@@ -101,6 +101,7 @@ func (s *mqWorkerService) consume(taskWorker *TaskWorker) {
 			client := resty.New()
 			resp, err := client.R().
 				//EnableTrace().
+				SetHeader("Content-Type", "application/json").
 				SetBody(data).
 				Post(taskWorker.Task.PushUrl)
 			global.ServerLogger.Infof("队列: %s, taskWorker推送: %s， 结果：%+v", taskWorker.Task.QueueName, taskWorker.Task.PushUrl, resp)
