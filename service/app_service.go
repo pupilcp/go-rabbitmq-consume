@@ -390,7 +390,12 @@ func (s *appService) showStatus() {
 		msg += fmt.Sprintf("启动时间：%s，运行时长：%s\n", serverStart.Format("2006-01-02 15:04:05"), time.Since(serverStart))
 		TaskWorkerMaps.Range(func(key, worker interface{}) bool {
 			taskWorker := worker.(TaskWorker)
-			msg += fmt.Sprintf("- Task worker id: %d, 队列名：%s 正在运行\n", taskWorker.Task.Id, taskWorker.Task.QueueName)
+			_, consumerCount, _ := taskWorker.Amqp.GetMsgCount(taskWorker.Task.QueueName)
+			if consumerCount > 0 {
+				msg += fmt.Sprintf("- Task worker id: %d, 队列名：%s，消费者数：%d， 正在运行\n", taskWorker.Task.Id, taskWorker.Task.QueueName, consumerCount)
+			} else {
+				TaskWorkerMaps.Delete(taskWorker.Task.Id)
+			}
 			isLive = true
 			return true
 		})
